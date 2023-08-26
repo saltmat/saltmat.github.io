@@ -1,0 +1,107 @@
+body {
+	font-family: 'Roboto', sans-serif;
+}
+
+.fieldset {
+    border: 1px solid #d1d1d1;
+	margin: 0 2px;
+    border-radius: 5px;
+    font-size: 13px;
+    padding: 10px;
+}
+legend {
+    float: inherit;
+	width:auto;
+	display: block;
+    -webkit-padding-start: 2px !important;
+    -webkit-padding-end: 2px !important;
+    -moz-padding-start: 4px !important;
+    -moz-padding-end: 4px !important;
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-width: initial;
+    border-image-outset: initial;
+    border-image-repeat: initial;
+    border: none;
+}
+.fieldset label {
+    font-size: 0.85em;
+    float: left;
+    margin: 2px 10px 0 0;
+    padding-left: 5px;
+}
+.counter-box {
+	display: block;
+	background: #f6f6f6;
+	padding: 40px 20px 37px;
+	text-align: center
+}
+
+.counter-box p {
+	margin: 5px 0 0;
+	padding: 0;
+	color: #909090;
+	font-size: 18px;
+	font-weight: 500
+}
+
+.counter-box i {
+	font-size: 60px;
+	margin: 0 0 15px;
+	color: #d2d2d2
+}
+
+.counter { 
+	display: block;
+	font-size: 32px;
+	font-weight: 700;
+	color: #666;
+	line-height: 28px
+}
+.kilo::after{
+	content: " KG";
+	font-size: 0.5em;
+}
+.megajoule:after {
+	content: " MJ";
+	font-size: 0.5em;
+}
+.grams:after {
+	content: " G";
+	font-size: 0.5em;
+}
+.counter-description{
+	display:block;
+	font-size:14px;
+	margin:10px 0;
+	padding:5px;
+	background:white;
+	
+}
+.counter-box.green {
+      background: #3acf87;
+}
+
+.counter-box.green p,
+.counter-box.green i,
+.counter-box.green .counter {
+	color: #fff
+}
+.counter-box.red {
+	background: #cf5a3a;
+}
+
+.counter-box.red p,
+.counter-box.red i,
+.counter-box.red .counter {
+  color: #fff
+}
+.counter-box.blue {
+	background: #3a82cf;
+}
+
+.counter-box.blue p,
+.counter-box.blue i,
+.counter-box.blue .counter {
+  color: #fff
+}
