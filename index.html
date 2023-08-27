@@ -179,7 +179,8 @@
 
     fetch('matvaretabellen.json')
       .then(response => response.json())
-      .then(jsonData => {
+      .then(data => {
+        jsonData = data;
       })
       .catch(error => {
         console.error('Error fetching JSON data:', error);
