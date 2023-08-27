@@ -119,3 +119,19 @@ legend {
 .counter-box.yellow .counter {
   color: #000;
 }
+.food-buttons-container {
+	height: 300px;
+	overflow-y: auto;
+  }
+  .food-buttons {
+	margin-top: 10px;
+  }
+  .food-button {
+	margin: 10px 10px 0 0;
+  }
+  .no-results {
+	margin-top:20px;
+	font-style: italic;
+	color: gray;
+	
+  }
