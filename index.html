@@ -20,7 +20,10 @@
 
   <!-- Include your custom CSS file for additional styling -->
   <link href="styling.css" rel="stylesheet">
-  
+
+  <!-- Including Matvaretabellen as Javascript file-->
+  <script src="matvaretabellen.js"></script>
+
   <!-- SEO: Meta tags -->
   <meta name="description" content="Saltmat er en uoffisiell nettside beregning av saltinntak for barn">
   <meta name="keywords" content="salt, saltinntak, kosthold, barnehagemat">
@@ -134,10 +137,11 @@
 
 <div class="row mt-5">
   
-  <h1>Food List</h1>
+  <h1>Kalkulator for saltinntak per måltid eller per dag</h1>
+  <p>Søk opp og legg til matvarer fra Matvaretabellen nedenfor, og legg deretter inn antall gram per matvare.</p>
     <div class="row">
       <div class="col-md-12">
-        <input type="text" id="foodSearch" class="form-control" placeholder="Search...">
+        <input type="text" id="foodSearch" class="form-control" placeholder="Søk etter matvare...">
         <div class="food-buttons-container">
           <div class="food-buttons" id="foodButtons"></div>
           <p class="no-results" id="noResults">Ingen treff</p>
@@ -147,23 +151,23 @@
 
 
 <!-- Table to Display Selected Items -->
-<table class="table">
+<table class="table mt-5">
   <thead>
     <tr>
       <th scope="col">Matvare</th>
-      <th scope="col">Saltinnhold</th>
-      <th scope="col">Mengde</th>
-      <th scope="col">Saltinntak</th>
-      <th scope="col">Fjern</th>
+      <th class="text-right" scope="col">Saltinnhold per 100g</th>
+      <th class="text-right" scope="col">Mengde i gram</th>
+      <th class="text-right" scope="col">Saltinntak for matvare</th>
+      <th class="text-right" scope="col">Fjern</th>
     </tr>
   </thead>
   <tbody id="selectedItems"></tbody>
-  <tfoot>
+  <tfoot class="table-footer">
     <tr>
-      <td>Total</td>
       <td></td>
       <td></td>
-      <td id="totalSalt">0</td>
+      <td class="text-right">Totalt</td>
+      <td class="text-right grams-normal" id="totalSalt">0</td>
       <td></td>
     </tr>
   </tfoot>
@@ -177,26 +181,21 @@
     const selectedItems = document.getElementById('selectedItems');
     const totalSalt = document.getElementById('totalSalt');
 
-    fetch('matvaretabellen.json')
-      .then(response => response.json())
-      .then(data => {
-        jsonData = data;
-      })
-      .catch(error => {
-        console.error('Error fetching JSON data:', error);
-      });
-
     // Function to populate the food buttons
     function populateFoodButtons(items) {
       foodButtons.innerHTML = ''; // Clear previous buttons
 
-      items.forEach(matvare => {
-        const button = document.createElement('button');
-        button.className = 'btn btn-secondary food-button';
-        button.textContent = matvare;
-        button.addEventListener('click', () => addItemToTable(matvare));
-        foodButtons.appendChild(button);
-      });
+      items.forEach(matvareName => {
+    const matvareObject = jsonData.find(item => item.Matvare === matvareName); // Find the corresponding object
+    if (matvareObject) {
+      const button = document.createElement('button');
+      button.className = 'btn btn-secondary food-button';
+      button.textContent = matvareName;
+      button.title = `Salt: ${matvareObject['Salt (g)']} gram per 100 gram`; // Access the Salt (g) property from the object
+      button.addEventListener('click', () => addItemToTable(matvareName)); // Use matvareName here instead of matvare
+      foodButtons.appendChild(button);
+    }
+  });
 
       if (items.length === 0) {
         noResults.style.display = 'block';
@@ -229,10 +228,10 @@
     const row = document.createElement('tr');
     row.innerHTML = `
       <td>${matvare}</td>
-      <td>${selectedItem['Salt (g)']}</td>
-      <td><input type="number" class="form-control" value="${quantity}"></td>
-      <td>${saltContent.toFixed(2)}</td>
-      <td><button class="btn btn-danger btn-sm" onclick="removeRow(this)">Fjern</button></td>
+      <td class="grams-normal text-right">${selectedItem['Salt (g)']}</td>
+      <td class="text-right"><input type="number" class="form-control gram-input" value="${quantity}"></td>
+      <td class="grams-normal text-right">${saltContent.toFixed(2)}</td>
+      <td class="text-right"><button class="btn btn-danger btn-sm" onclick="removeRow(this)">Fjern</button></td>
     `;
     selectedItems.appendChild(row);
     updateTotalSalt();
@@ -255,10 +254,10 @@
     }
 
     function removeRow(button) {
-      const row = button.parentNode.parentNode;
-      selectedItems.removeChild(row);
-      updateTotalSalt();
-    }
+    const row = button.parentNode.parentNode;
+    selectedItems.removeChild(row);
+    updateTotalSalt();
+  }
 
     function updateTotalSalt() {
       const rows = selectedItems.querySelectorAll('tr');
@@ -286,6 +285,7 @@
 
  <div class="row mt-5">
   <h2>Kilder</h2>
+  <p>Matvaretabellen fra 2022: <a href="https://matvaretabellen.no/">https://matvaretabellen.no/</a></p>
 <p>NNR 2012, kapittel 31 om anbefalt saltinntak: <a href="https://www.norden.org/en/publication/nordic-nutrition-recommendations-2012">https://www.norden.org/en/publication/nordic-nutrition-recommendations-2012</a></p>
 <p>FAO/WHO/UNU Human energy requirements om beregning av energiinntak: <a href="https://www.fao.org/3/y5686e/y5686e.pdf">https://www.fao.org/3/y5686e/y5686e.pdf</a></p>
  </div>

@@ -51,17 +51,18 @@ legend {
 }
 
 .counter-box i {
-	font-size: 60px;
+	font-size: 30px;
 	margin: 0 0 15px;
 	color: #d2d2d2
 }
 
 .counter { 
 	display: block;
-	font-size: 32px;
+	font-size: 45px;
 	font-weight: 700;
 	color: #666;
-	line-height: 28px
+	line-height: 28px;
+	margin-top: 10px;
 }
 .kilo::after{
 	content: " KG";
@@ -74,6 +75,9 @@ legend {
 .grams:after {
 	content: " G";
 	font-size: 0.5em;
+}
+.grams-normal:after {
+	content: " g";
 }
 .counter-description{
 	display:block;
@@ -120,8 +124,12 @@ legend {
   color: #000;
 }
 .food-buttons-container {
-	height: 300px;
+	height: 150px;
 	overflow-y: auto;
+	border: 1px solid #bebcbc;
+    padding: 0 18px;
+    margin: 10px 0;
+    border-radius: 5px;
   }
   .food-buttons {
 	margin-top: 10px;
@@ -132,6 +140,37 @@ legend {
   .no-results {
 	margin-top:20px;
 	font-style: italic;
-	color: gray;
+	color: #666;
 	
   }
+  .table-footer {
+	border-bottom: 1px white;
+  }
+  .gram-input {
+	border: none;
+	border-bottom: 2px solid #ccc; /* Add a bottom border */
+	border-radius:0;
+	padding: 5px 0;
+	width: 120px;
+	font-size: 16px;
+	display: inline-block;
+	text-align:right;
+  }
+  
+  /* Style for the input field when focused */
+  .gram-input:focus {
+	outline: none; /* Remove the default focus outline */
+	border-color: #007bff;
+	border-top: none;
+	border-left:none;
+	border-right:none;
+	box-shadow:none;
+  }
+  
+  /* Add 'grams' as a suffix */
+  .gram-input::after {
+	content: 'grams';
+	display: inline-block;
+	margin-left: 5px;
+  }
+  .text-right {text-align: right;}
