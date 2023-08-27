@@ -14,6 +14,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
+<!-- Include FontAwesome -->
+<script src="https://kit.fontawesome.com/0d9812eb8a.js" crossorigin="anonymous"></script>
+
   <!-- Include your custom CSS file for additional styling -->
   <link href="styling.css" rel="stylesheet">
   
@@ -81,8 +84,8 @@
       <fieldset class="fieldset">
         <legend><label>Jente</label></legend>
         <div class="two col-lg-10 mx-auto">
-          <div class="counter-box blue">
-            <i class="fa fa-group"></i>
+          <div class="counter-box yellow">
+            <i class="fa-solid fa-bolt"></i>
             <span id="estimatedEnergyGirls" class="counter megajoule">0</span>
             <p>Estimert energiinntak</p>
             <span class="counter-description">1,102+0,273*(vekt)-0,0019*(vekt)<sup>2</sup> <br>Kilde:FAO/WHO/UNU</span>
@@ -90,7 +93,7 @@
         </div>
         <div class="col-lg-10 mx-auto mt-5 mb-5">
           <div class="counter-box red">
-            <i class="fa  fa-user"></i>
+            <i class="fa-solid fa-weight-scale"></i>
             <span id="maxSaltGirls" class="counter grams">0</span>
             <p>Maksimalt daglig saltinntak</p>
             <span class="counter-description">Helsedirektoratets anbefaling er maks 0,5 gram per MJ</span>
@@ -104,8 +107,8 @@
       <fieldset class="fieldset">
         <legend><label>Gutt</label></legend>
         <div class="col-lg-10 mx-auto">
-          <div class="counter-box blue">
-            <i class="fa fa-group"></i>
+          <div class="counter-box yellow">
+            <i class="fa-solid fa-bolt"></i>
             <span id="estimatedEnergyBoys" class="counter megajoule">0</span>
             <p>Estimert energiinntak</p>
             <span class="counter-description">1,298+0,265*(vekt)-0,0011*(vekt)<sup>2</sup> <br>Kilde:FAO/WHO/UNU</span>
@@ -113,7 +116,7 @@
         </div>
         <div class="col-lg-10 mx-auto mt-5 mb-5">
           <div class="counter-box red">
-            <i class="fa  fa-user"></i>
+            <i class="fa-solid fa-weight-scale"></i>
             <span id="maxSaltBoys" class="counter grams">0</span>
             <p>Maksimalt daglig saltinntak</p>
             <span class="counter-description">Helsedirektoratets anbefaling er maks 0,5 gram per MJ</span>
@@ -127,6 +130,118 @@
 	
 
  </div>
+
+<div class="row mt-5">
+  <h2>Food Items</h2>
+
+<input type="text" id="searchInput" placeholder="Search for a food item">
+<div id="searchResults"></div>
+
+<table class="table" id="foodList">
+  <thead>
+    <tr>
+      <th scope="col">Gram</th>
+      <th scope="col">Matvare</th>
+      <th scope="col">Salt per 100g</th>
+      <th scope="col">Total Saltinnhold</th>
+      <th scope="col">Handling</th>
+    </tr>
+  </thead>
+  <tbody>
+    <td><input type="number" class="amount" min="0" step="1" class="form-control"></td>
+      <td>Brød</td>
+      <td class="saltPer100g">1.0</td>
+      <td class="totalSalt">0</td>
+      <td><button class="removeBtn">Fjern</button></td>
+  </tbody>
+</table>
+
+<h3>Total Amount of Salt: <span id="totalAmount">0</span> g</h3>
+
+<script>
+  const searchInput = document.getElementById('searchInput');
+  const searchResults = document.getElementById('searchResults');
+  const foodList = document.getElementById('foodList');
+  const totalAmountElement = document.getElementById('totalAmount');
+  const foodItems = []; // Store the fetched food items here
+  let searchTimeout;
+
+  // Fetch food items from JSON file
+  fetch('food_items.json')
+    .then(response => response.json())
+    .then(data => {
+      foodItems.push(...data);
+    });
+
+  // Add event listeners to the input fields
+  searchInput.addEventListener('input', handleSearchInput);
+
+  // Function to handle search input and query food items
+  function handleSearchInput() {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+      const searchTerm = searchInput.value.toLowerCase();
+      const matchingItems = foodItems.filter(item => item.name.toLowerCase().includes(searchTerm));
+
+      searchResults.innerHTML = '';
+      matchingItems.forEach(item => {
+        const listItem = document.createElement('div');
+        listItem.classList.add('search-result');
+        listItem.textContent = item.name;
+        listItem.addEventListener('click', () => addFoodItem(item));
+        searchResults.appendChild(listItem);
+      });
+    }, 300);
+  }
+
+  // Function to add a food item to the table
+  function addFoodItem(item) {
+    const newRow = foodList.insertRow();
+    newRow.innerHTML = `
+      <td><input type="number" class="amount" min="0" step="1" class="form-control" ></td>
+      <td>${item.name}</td>
+      <td class="saltPer100g">${item.saltPer100g}</td>
+      <td class="totalSalt">0</td>
+      <td><button class="removeBtn">Fjern</button></td>
+    `;
+
+    const removeBtn = newRow.querySelector('.removeBtn');
+    removeBtn.addEventListener('click', () => removeFoodItem(newRow));
+
+    newRow.querySelector('.amount').addEventListener('input', updateTotalAmount);
+  }
+
+  // Function to remove a food item from the table
+  function removeFoodItem(row) {
+    foodList.deleteRow(row.rowIndex);
+    updateTotalAmount();
+  }
+
+  // Function to update the total amount of salt
+  function updateTotalAmount() {
+    function updateTotalAmount() {
+    let totalAmount = 0;
+
+    // Loop through each row in the table
+    const rows = foodList.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+      const amountInput = row.querySelector('.amount');
+      const saltPer100g = parseFloat(row.querySelector('td:nth-child(3)').textContent);
+      const totalSaltElement = row.querySelector('.totalSalt');
+
+      const amount = parseFloat(amountInput.value) || 0;
+      const totalSalt = (amount / 100) * saltPer100g;
+      totalSaltElement.textContent = totalSalt.toFixed(2);
+
+      totalAmount += totalSalt;
+    });
+
+    totalAmountElement.textContent = totalAmount.toFixed(2);
+  }
+  }
+</script>
+</div>
+
  <div class="row mt-5">
   <h2>Kilder</h2>
 <p>NNR 2012, kapittel 31 om anbefalt saltinntak: <a href="https://www.norden.org/en/publication/nordic-nutrition-recommendations-2012">https://www.norden.org/en/publication/nordic-nutrition-recommendations-2012</a></p>
@@ -181,6 +296,8 @@
       maxSaltBoys.textContent = maxSaltBoysValue;
       maxSaltGirls.textContent = maxSaltGirlsValue;
     }
+
+
   </script>
 </body>
 </html>

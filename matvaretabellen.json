@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "name": "Bread",
+    "saltPer100g": 0.5
+  },
+  {
+    "id": 2,
+    "name": "Meatballs",
+    "saltPer100g": 0.8
+  },
+]

@@ -32,6 +32,8 @@ legend {
     float: left;
     margin: 2px 10px 0 0;
     padding-left: 5px;
+	position: sticky;
+    z-index: 900;
 }
 .counter-box {
 	display: block;
@@ -88,7 +90,7 @@ legend {
 .counter-box.green p,
 .counter-box.green i,
 .counter-box.green .counter {
-	color: #fff
+	color: #fff;
 }
 .counter-box.red {
 	background: #cf5a3a;
@@ -97,7 +99,7 @@ legend {
 .counter-box.red p,
 .counter-box.red i,
 .counter-box.red .counter {
-  color: #fff
+  color: #fff;
 }
 .counter-box.blue {
 	background: #3a82cf;
@@ -106,5 +108,14 @@ legend {
 .counter-box.blue p,
 .counter-box.blue i,
 .counter-box.blue .counter {
-  color: #fff
+  color: #fff;
+}
+.counter-box.yellow {
+	background: #cfc33a;
+}
+
+.counter-box.yellow p,
+.counter-box.yellow i,
+.counter-box.yellow .counter {
+  color: #000;
 }
